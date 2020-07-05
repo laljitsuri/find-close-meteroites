@@ -18,19 +18,20 @@ def distance(origin, destination):
 def get_distance(meteor):
     return(meteor.get('dist',math.inf))
 
-my_location = (-38.272689,144.84375)
+if __name__ == '__main__':
+    my_location = (-38.272689,144.84375)
 
-meteor_response = requests.get('https://data.nasa.gov/resource/y77d-th95.json')
+    meteor_response = requests.get('https://data.nasa.gov/resource/y77d-th95.json')
 
-meteor_data = meteor_response.json()
+    meteor_data = meteor_response.json()
 
-for meteor in meteor_data:
-    if not meteor.get('reclat') or not meteor.get('reclong'):continue
-    d=distance((my_location[0],my_location[1]),(float(meteor.get('reclat')),float(meteor.get('reclong'))))
-    meteor['dist']=d
+    for meteor in meteor_data:
+        if not meteor.get('reclat') or not meteor.get('reclong'):continue
+        d=distance((my_location[0],my_location[1]),(float(meteor.get('reclat')),float(meteor.get('reclong'))))
+        meteor['dist']=d
 
-meteor_data.sort(key=get_distance)
+    meteor_data.sort(key=get_distance)
 
-print(meteor_data[0:10])
-print("\nThe nearest ten distances are \n")
-for i in range(0,10):print(meteor_data[i].get('dist'))
+    print(meteor_data[0:10])
+    print("\nThe nearest ten distances are \n")
+    for i in range(0,10):print(meteor_data[i].get('dist'))
